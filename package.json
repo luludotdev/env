@@ -15,13 +15,25 @@
   "files": [
     "lib/**/*"
   ],
-  "scripts": {},
+  "scripts": {
+    "prepack": "yarn run build",
+    "prepublish": "yarn run test",
+    "test": "yarn run check",
+    "check": "yarn run compile --noEmit",
+    "clean": "rimraf lib",
+    "compile": "tsc",
+    "build": "yarn run clean && yarn run compile",
+    "dev": "yarn run clean && yarn run compile --watch"
+  },
   "repository": "git@github.com:lolPants/env.git",
   "author": "Jack Baron <jackmbaron@gmail.com>",
   "license": "MIT",
   "engines": {
     "node": ">=16"
   },
-  "devDependencies": {},
-  "dependencies": {}
+  "devDependencies": {
+    "@types/node": "^17.0.33",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.6.4"
+  }
 }
