@@ -1,3 +1,27 @@
 {
-  "packageManager": "yarn@3.2.1"
+  "name": "@lolpants/env",
+  "version": "0.1.0",
+  "packageManager": "yarn@3.2.1",
+  "type": "module",
+  "module": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {},
+  "repository": "git@github.com:lolPants/env.git",
+  "author": "Jack Baron <jackmbaron@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16"
+  },
+  "devDependencies": {},
+  "dependencies": {}
 }
