@@ -18,8 +18,9 @@
   "scripts": {
     "prepack": "yarn run build",
     "prepublish": "yarn run test",
-    "test": "yarn run check",
+    "test": "yarn run check && yarn run lint",
     "check": "yarn run compile --noEmit",
+    "lint": "xo ./src",
     "clean": "rimraf lib",
     "compile": "tsc",
     "build": "yarn run clean && yarn run compile",
@@ -34,6 +35,7 @@
   "devDependencies": {
     "@types/node": "^17.0.33",
     "rimraf": "^3.0.2",
-    "typescript": "^4.6.4"
+    "typescript": "^4.6.4",
+    "xo": "^0.48.0"
   }
 }
