@@ -10,8 +10,8 @@
       "import": "./lib/index.js",
       "types": "./lib/index.d.ts"
     },
-    "./register": "./lib/register.ts",
-    "./register.js": "./lib/register.ts"
+    "./register": "./lib/register.js",
+    "./register.js": "./lib/register.js"
   },
   "sideEffects": false,
   "files": [
