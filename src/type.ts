@@ -36,9 +36,15 @@ interface Environment<
 
   default: Required extends true
     ? never
-    : (value: InferTypeBasic<T>) => Environment<T, true, InferTypeBasic<T>>
+    : Default extends undefined
+    ? (value: InferTypeBasic<T>) => Environment<T, true, InferTypeBasic<T>>
+    : never
 
-  required: Default extends undefined ? () => Environment<T, true> : never
+  required: Required extends true
+    ? never
+    : Default extends undefined
+    ? () => Environment<T, true>
+    : never
 }
 
 export interface MonoEnvironment {
