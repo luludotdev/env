@@ -50,7 +50,9 @@ export function defineEnvironment<T extends Template>(template: T): Values<T> {
       get(_, prop) {
         if (typeof prop === 'symbol') return undefined
 
+        if (!(prop in template)) return undefined
         const environment = template[prop]
+
         const { name, type } = environment
         const required = environment.required ?? false
 
