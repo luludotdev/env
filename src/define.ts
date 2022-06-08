@@ -32,7 +32,7 @@ interface Mappings {
 }
 
 export interface Environment {
-  name: string
+  name?: string
   type: Type
   required?: boolean
 }
@@ -66,7 +66,8 @@ export function defineEnvironment<T extends Template>(
         if (!(prop in template)) return undefined
         const environment = template[prop]
 
-        const { name, type } = environment
+        const { type } = environment
+        const name = environment.name ?? prop
         const required = environment.required ?? false
 
         const rawValue = env[name]
