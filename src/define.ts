@@ -7,23 +7,28 @@ import {
   ParseValueError,
 } from './parse.js'
 
-export const string = Symbol('string')
-export const int = Symbol('int')
-export const float = Symbol('float')
-export const bool = Symbol('bool')
+const stringType = Symbol('string')
+const intType = Symbol('int')
+const floatType = Symbol('float')
+const boolType = Symbol('bool')
 
-export type Type = typeof types[number]
-const types = [string, int, float, bool] as const
+export type Type = typeof types[keyof typeof types]
+const types = {
+  string: stringType,
+  int: intType,
+  float: floatType,
+  bool: boolType,
+} as const
 
 type InferType<T extends Type, R extends boolean | undefined> = R extends true
   ? Mappings[T]
   : Mappings[T] | undefined
 
 interface Mappings {
-  [string]: string
-  [int]: number
-  [float]: number
-  [bool]: boolean
+  [types.string]: string
+  [types.int]: number
+  [types.float]: number
+  [types.bool]: boolean
 }
 
 export interface Environment {
@@ -78,21 +83,21 @@ const validate: <T extends Type>(type: T, value: string) => Mappings[T] = (
   rawValue
 ) => {
   switch (type) {
-    case string: {
+    case types.string: {
       return rawValue
     }
 
-    case int: {
+    case types.int: {
       const value = parseIntValue(rawValue)
       return value
     }
 
-    case float: {
+    case types.float: {
       const value = parseFloatValue(rawValue)
       return value
     }
 
-    case bool: {
+    case types.bool: {
       const value = parseBoolValue(rawValue)
       return value
     }
@@ -101,3 +106,5 @@ const validate: <T extends Type>(type: T, value: string) => Mappings[T] = (
       throw new Error('unknown parse type')
   }
 }
+
+export { types as t }
