@@ -43,13 +43,15 @@ export function defineEnvironment<T extends Template>(
         if (!(prop in template)) return undefined
         const environment = template[prop]
 
-        const { type } = environment
+        const { type, defaultValue } = environment
         const name = environment.name ?? prop
         const required = environment.isRequired
 
         const rawValue = env[name]
         if (rawValue === undefined) {
           if (required) throw new RequiredError(prop, environment)
+          if (defaultValue !== undefined) return defaultValue
+
           return undefined
         }
 
