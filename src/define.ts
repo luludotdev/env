@@ -72,7 +72,7 @@ export function defineEnvironment<T extends Template>(
 
         const rawValue = env[name]
         if (rawValue === undefined) {
-          if (required) throw new RequiredError(environment)
+          if (required) throw new RequiredError(prop, environment)
           return undefined
         }
 
@@ -81,7 +81,7 @@ export function defineEnvironment<T extends Template>(
           return value
         } catch (error: unknown) {
           if (error instanceof ParseValueError) {
-            throw new ParseError(error.type, environment)
+            throw new ParseError(error.type, prop, environment)
           }
 
           throw error
