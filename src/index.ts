@@ -1,59 +1,41 @@
 import { env } from 'node:process'
 
-function _string(name: string, required?: false): string | undefined
-function _string(name: string, required: true): string
-function _string(name: string, required: boolean): string | undefined
-function _string(name: string, required = false): string | undefined {
-  const value = env[name]
-  if (value === undefined) {
-    if (required) throw new Error(`Missing environment variable \`${name}\``)
-    return undefined
-  }
+export const string = Symbol('string')
+export const int = Symbol('int')
+export const float = Symbol('float')
+export const bool = Symbol('bool')
 
-  return value
+export type Type = typeof types[number]
+export const types = [string, int, float, bool] as const
+
+type InferType<T extends Type> = Mappings[T]
+interface Mappings {
+  [string]: string
+  [int]: number
+  [float]: number
+  [bool]: boolean
 }
 
-const trueValues = new Set(['true', 't', '1', 'yes', 'y'])
-const falseValues = new Set(['false', 'f', '0', 'no', 'n'])
+type Environment = readonly [name: string, type: Type]
+type Template = Record<string, Environment>
 
-function bool(name: string, required?: false): boolean | undefined
-function bool(name: string, required: true): boolean
-function bool(name: string, required = false): boolean | undefined {
-  const value = env[name]
-  if (value === undefined) {
-    if (required) throw new Error(`Missing environment variable \`${name}\``)
-    return undefined
-  }
-
-  const isTrue = trueValues.has(value.toLowerCase())
-  const isFalse = falseValues.has(value.toLowerCase())
-  if (isTrue === false && isFalse === false) {
-    throw new TypeError(
-      `Invalid environment variable \`${name}\` : expected type \`bool\``
-    )
-  }
-
-  if (isTrue) return true
-  if (isFalse) return false
+type Values<T extends Template> = {
+  [K in keyof T]: InferType<T[K][1]>
 }
 
-function int(name: string, required?: false): number | undefined
-function int(name: string, required: true): number
-function int(name: string, required = false): number | undefined {
-  const value = env[name]
-  if (value === undefined) {
-    if (required) throw new Error(`Missing environment variable \`${name}\``)
-    return undefined
-  }
+export function createEnv<T extends Template>(template: T): Values<T> {
+  const proxy = new Proxy<Values<T>>(
+    // @ts-expect-error Proxy Target
+    {},
+    {
+      get(_, prop) {
+        if (typeof prop === 'symbol') return undefined
 
-  const parsed = Number.parseInt(value, 10)
-  if (Number.isNaN(parsed)) {
-    throw new TypeError(
-      `Invalid environment variable \`${name}\` : expected type \`int\``
-    )
-  }
+        const type = template[prop]
+        // TODO: Validation
+      },
+    }
+  )
 
-  return parsed
+  return proxy
 }
-
-export { _string as registerString, bool as registerBool, int as registerInt }
