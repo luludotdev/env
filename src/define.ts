@@ -72,6 +72,7 @@ export function defineEnvironment<T extends Template>(template: T): Values<T> {
   return proxy
 }
 
+// @ts-expect-error Ignore `never` type error
 const validate: <T extends Type>(type: T, value: string) => Mappings[T] = (
   type,
   rawValue
