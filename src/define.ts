@@ -42,13 +42,26 @@ type Values<T extends Template> = {
   readonly [K in keyof T]: InferType<T[K]['type'], T[K]['required']>
 }
 
-export function defineEnvironment<T extends Template>(template: T): Values<T> {
-  const proxy = new Proxy<Values<T>>(
+const validateFn = 'validate'
+interface Extension {
+  readonly [validateFn]: () => void
+}
+
+export function defineEnvironment<T extends Template>(
+  template: T
+): Values<T> & Extension {
+  const proxy = new Proxy<Values<T> & Extension>(
     // @ts-expect-error Proxy Target
     {},
     {
       get(_, prop) {
         if (typeof prop === 'symbol') return undefined
+
+        if (prop === validateFn) {
+          return () => {
+            void Object.entries(proxy)
+          }
+        }
 
         if (!(prop in template)) return undefined
         const environment = template[prop]
