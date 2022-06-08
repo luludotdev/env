@@ -13,8 +13,10 @@ const trueValues = new Set(['true', 't', '1', 'yes', 'y'])
 const falseValues = new Set(['false', 'f', '0', 'no', 'n'])
 
 export const parseBoolValue: ParseFn<boolean> = value => {
-  const isTrue = trueValues.has(value.toLowerCase())
-  const isFalse = falseValues.has(value.toLowerCase())
+  const lower = value.toLowerCase()
+
+  const isTrue = trueValues.has(lower)
+  const isFalse = falseValues.has(lower)
 
   if (isTrue) return true
   if (isFalse) return false
