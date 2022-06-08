@@ -71,6 +71,21 @@ export function defineEnvironment<T extends Template>(template: T): Values<T> {
           throw error
         }
       },
+
+      has(_, prop) {
+        return prop in template
+      },
+
+      ownKeys() {
+        return Reflect.ownKeys(template)
+      },
+
+      getOwnPropertyDescriptor() {
+        return {
+          configurable: true,
+          enumerable: true,
+        }
+      },
     }
   )
 
