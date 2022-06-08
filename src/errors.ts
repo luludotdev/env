@@ -1,4 +1,4 @@
-import { type Environment } from './index.js'
+import { type MonoEnvironment as Environment } from './type.js'
 
 class EnvironmentError extends Error {
   public readonly prop: string

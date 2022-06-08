@@ -6,40 +6,17 @@ import {
   parseIntValue,
   ParseValueError,
 } from './parse.js'
+import {
+  type InferType,
+  type Mappings,
+  type MonoEnvironment,
+  type Type,
+  types,
+} from './type.js'
 
-const stringType = Symbol('string')
-const intType = Symbol('int')
-const floatType = Symbol('float')
-const boolType = Symbol('bool')
-
-export type Type = typeof types[keyof typeof types]
-const types = {
-  string: stringType,
-  int: intType,
-  float: floatType,
-  bool: boolType,
-} as const
-
-type InferType<T extends Type, R extends boolean | undefined> = R extends true
-  ? Mappings[T]
-  : Mappings[T] | undefined
-
-interface Mappings {
-  [types.string]: string
-  [types.int]: number
-  [types.float]: number
-  [types.bool]: boolean
-}
-
-export interface Environment {
-  name?: string
-  type: Type
-  required?: boolean
-}
-
-type Template = Record<string, Environment>
+type Template = Record<string, MonoEnvironment>
 type Values<T extends Template> = {
-  readonly [K in keyof T]: InferType<T[K]['type'], T[K]['required']>
+  readonly [K in keyof T]: InferType<T[K]['type'], T[K]['isRequired']>
 }
 
 const validateFn = 'validate'
@@ -68,7 +45,7 @@ export function defineEnvironment<T extends Template>(
 
         const { type } = environment
         const name = environment.name ?? prop
-        const required = environment.required ?? false
+        const required = environment.isRequired
 
         const rawValue = env[name]
         if (rawValue === undefined) {
@@ -137,5 +114,3 @@ const validate: <T extends Type>(type: T, value: string) => Mappings[T] = (
       throw new Error('unknown parse type')
   }
 }
-
-export { types as t }
