@@ -29,3 +29,15 @@ export class ParseError extends EnvironmentError {
     super(prop, environment, message)
   }
 }
+
+export class ValidateError extends EnvironmentError {
+  public readonly reason: string
+
+  constructor(reason: string, prop: string, environment: Environment) {
+    const name = environment.name ?? prop
+    const message = `Invalid environment variable: ${name}\n${reason}`
+
+    super(prop, environment, message)
+    this.reason = reason
+  }
+}

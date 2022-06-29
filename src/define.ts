@@ -1,5 +1,5 @@
 import { env } from 'node:process'
-import { ParseError, RequiredError } from './errors.js'
+import { ParseError, RequiredError, ValidateError } from './errors.js'
 import {
   parseBoolValue,
   parseFloatValue,
@@ -43,20 +43,34 @@ export function defineEnvironment<T extends Template>(
         if (!(prop in template)) return undefined
         const environment = template[prop]
 
-        const { type, defaultValue } = environment
+        const { type, defaultValue, validateFn: valueValidateFn } = environment
         const name = environment.name ?? prop
         const required = environment.isRequired
 
         const rawValue = env[name]
         if (rawValue === undefined) {
           if (required) throw new RequiredError(prop, environment)
-          if (defaultValue !== undefined) return defaultValue
+
+          const value = defaultValue !== undefined ? defaultValue : undefined
+          if (valueValidateFn !== undefined) {
+            const validateResult = valueValidateFn(value)
+            if (typeof validateResult === 'string') {
+              throw new ValidateError(validateResult, prop, environment)
+            }
+          }
 
           return undefined
         }
 
         try {
           const value = validate(type, rawValue)
+          if (valueValidateFn !== undefined) {
+            const validateResult = valueValidateFn(value)
+            if (typeof validateResult === 'string') {
+              throw new ValidateError(validateResult, prop, environment)
+            }
+          }
+
           return value
         } catch (error: unknown) {
           if (error instanceof ParseValueError) {

@@ -24,15 +24,21 @@ export type InferType<
   R extends boolean | undefined
 > = R extends true ? Mappings[T] : Mappings[T] | undefined
 
+type ValidateFn<T extends Type, R extends boolean | undefined> = (
+  value: InferType<T, R>
+) => void | undefined | string
+
 interface Environment<
   T extends Type,
   Required extends boolean = false,
-  Default extends InferTypeBasic<T> | undefined = undefined
+  Default extends InferTypeBasic<T> | undefined = undefined,
+  Validate extends boolean = false
 > {
   name?: string
   type: T
   isRequired: Required
   defaultValue: Default
+  validateFn: Validate extends true ? ValidateFn<T, Required> : undefined
 
   default: Required extends true
     ? never
@@ -45,6 +51,10 @@ interface Environment<
     : Default extends undefined
     ? () => Environment<T, true>
     : never
+
+  validate: Validate extends true
+    ? never
+    : (fn: ValidateFn<T, Required>) => Environment<T, Required, Default, true>
 }
 
 export interface MonoEnvironment {
@@ -52,6 +62,7 @@ export interface MonoEnvironment {
   type: Type
   isRequired: boolean
   defaultValue?: unknown
+  validateFn: ((v: any) => void | undefined | string) | undefined
 }
 
 const createEnvironment: <T extends Type>(
@@ -72,6 +83,14 @@ const createEnvironment: <T extends Type>(
   default(value) {
     // @ts-expect-error Type Shifting
     this.defaultValue = value
+
+    return this
+  },
+
+  // @ts-expect-error Type Shifting
+  validate(fn) {
+    // @ts-expect-error Type Shifting
+    this.validateFn = fn
 
     return this
   },
