@@ -10,8 +10,14 @@
       "import": "./lib/index.js",
       "types": "./lib/index.d.ts"
     },
-    "./register": "./lib/register.js",
-    "./register.js": "./lib/register.js"
+    "./register": {
+      "import": "./lib/register.js",
+      "types": "./lib/register.d.ts"
+    },
+    "./register.js": {
+      "import": "./lib/register.js",
+      "types": "./lib/register.d.ts"
+    }
   },
   "sideEffects": false,
   "files": [
