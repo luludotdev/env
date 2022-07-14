@@ -59,7 +59,7 @@ export function defineEnvironment<T extends Template>(
             }
           }
 
-          return undefined
+          return value
         }
 
         try {
