@@ -1,10 +1,11 @@
-import { type MonoEnvironment as Environment } from './type.js'
+import type { MonoEnvironment as Environment } from './type.js'
 
 class EnvironmentError extends Error {
   public readonly prop: string
+
   public readonly environment: Environment
 
-  constructor(prop: string, environment: Environment, message?: string) {
+  public constructor(prop: string, environment: Environment, message?: string) {
     super(message)
 
     this.prop = prop
@@ -13,7 +14,7 @@ class EnvironmentError extends Error {
 }
 
 export class RequiredError extends EnvironmentError {
-  constructor(prop: string, environment: Environment) {
+  public constructor(prop: string, environment: Environment) {
     const name = environment.name ?? prop
     const message = `Missing environment variable: ${name}`
 
@@ -22,7 +23,7 @@ export class RequiredError extends EnvironmentError {
 }
 
 export class ParseError extends EnvironmentError {
-  constructor(type: string, prop: string, environment: Environment) {
+  public constructor(type: string, prop: string, environment: Environment) {
     const name = environment.name ?? prop
     const message = `Invalid environment variable: ${name}, expected type \`${type}\``
 
@@ -33,7 +34,7 @@ export class ParseError extends EnvironmentError {
 export class ValidateError extends EnvironmentError {
   public readonly reason: string
 
-  constructor(reason: string, prop: string, environment: Environment) {
+  public constructor(reason: string, prop: string, environment: Environment) {
     const name = environment.name ?? prop
     const message = `Invalid environment variable: ${name}\n${reason}`
 

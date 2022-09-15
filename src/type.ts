@@ -3,8 +3,8 @@ export const intType = Symbol('int')
 export const floatType = Symbol('float')
 export const boolType = Symbol('bool')
 
-export type Type = typeof types[keyof typeof types]
-export const types = {
+export type Type = typeof typeSymbols[keyof typeof typeSymbols]
+export const typeSymbols = {
   string: stringType,
   int: intType,
   float: floatType,
@@ -12,27 +12,27 @@ export const types = {
 } as const
 
 export interface Mappings {
-  [types.string]: string
-  [types.int]: number
-  [types.float]: number
-  [types.bool]: boolean
+  [typeSymbols.string]: string
+  [typeSymbols.int]: number
+  [typeSymbols.float]: number
+  [typeSymbols.bool]: boolean
 }
 
 export type InferTypeBasic<T extends Type> = Mappings[T]
 export type InferType<
   T extends Type,
-  R extends boolean | undefined
+  R extends boolean | undefined,
 > = R extends true ? Mappings[T] : Mappings[T] | undefined
 
 type ValidateFn<T extends Type, R extends boolean | undefined> = (
-  value: InferType<T, R>
-) => void | undefined | string
+  value: InferType<T, R>,
+) => string | undefined
 
 interface Environment<
   T extends Type,
   Required extends boolean = false,
   Default extends InferTypeBasic<T> | undefined = undefined,
-  Validate extends boolean = false
+  Validate extends boolean = false,
 > {
   name?: string
   type: T
@@ -62,11 +62,11 @@ export interface MonoEnvironment {
   type: Type
   isRequired: boolean
   defaultValue?: unknown
-  validateFn: ((v: any) => void | undefined | string) | undefined
+  validateFn: ((v: any) => string | undefined) | undefined
 }
 
 const createEnvironment: <T extends Type>(
-  type: T
+  type: T,
 ) => (name?: string) => Environment<T> = type => name => ({
   name,
   type,
@@ -96,9 +96,11 @@ const createEnvironment: <T extends Type>(
   },
 })
 
-export const t = {
-  string: createEnvironment(types.string),
-  int: createEnvironment(types.int),
-  float: createEnvironment(types.float),
-  bool: createEnvironment(types.bool),
+const types = {
+  string: createEnvironment(typeSymbols.string),
+  int: createEnvironment(typeSymbols.int),
+  float: createEnvironment(typeSymbols.float),
+  bool: createEnvironment(typeSymbols.bool),
 } as const
+
+export { types as t }

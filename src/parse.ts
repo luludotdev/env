@@ -1,7 +1,7 @@
 export class ParseValueError extends TypeError {
   public readonly type: string
 
-  constructor(type: string) {
+  public constructor(type: string) {
     super()
     this.type = type
   }
