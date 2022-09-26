@@ -62,7 +62,7 @@ export interface MonoEnvironment {
   type: Type
   isRequired: boolean
   defaultValue?: unknown
-  validateFn: ((v: any) => string | undefined) | undefined
+  validateFn: ((v: unknown) => string | undefined) | undefined
 }
 
 const createEnvironment: <T extends Type>(
