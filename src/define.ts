@@ -1,4 +1,4 @@
-import { env } from 'node:process'
+import { env } from 'process'
 import { ParseError, RequiredError, ValidateError } from './errors.js'
 import {
   parseBoolValue,

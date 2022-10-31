@@ -9,5 +9,8 @@
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
   },
+  "rules": {
+    "unicorn/prefer-node-protocol": 0
+  },
   "ignorePatterns": ["**/dist/*"]
 }
