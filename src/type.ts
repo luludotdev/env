@@ -62,7 +62,8 @@ export interface MonoEnvironment {
   type: Type
   isRequired: boolean
   defaultValue?: unknown
-  validateFn: ((v: unknown) => string | undefined) | undefined
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  validateFn: ((v: any) => string | undefined) | undefined
 }
 
 const createEnvironment: <T extends Type>(
