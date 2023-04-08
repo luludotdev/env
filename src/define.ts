@@ -6,13 +6,8 @@ import {
   parseIntValue,
   ParseValueError,
 } from './parse.js'
-import {
-  type InferType,
-  type Mappings,
-  type MonoEnvironment,
-  type Type,
-  typeSymbols as types,
-} from './type.js'
+import { typeSymbols as types } from './type.js'
+import type { InferType, Mappings, MonoEnvironment, Type } from './type.js'
 
 type Template = Record<string, MonoEnvironment>
 type Values<T extends Template> = {

@@ -3,7 +3,7 @@ export const intType = Symbol('int')
 export const floatType = Symbol('float')
 export const boolType = Symbol('bool')
 
-export type Type = typeof typeSymbols[keyof typeof typeSymbols]
+export type Type = (typeof typeSymbols)[keyof typeof typeSymbols]
 export const typeSymbols = {
   string: stringType,
   int: intType,
