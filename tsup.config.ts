@@ -36,4 +36,5 @@ export function createTsupConfig({
 
 export default createTsupConfig({
   entry: ['./src/index.ts', './src/register.ts'],
+  shims: false,
 })
