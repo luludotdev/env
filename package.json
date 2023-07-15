@@ -42,13 +42,13 @@
     "node": ">=16.9.0"
   },
   "devDependencies": {
-    "@luludev/eslint-config": "^0.4.0",
-    "@types/node": "^18.15.11",
-    "eslint": "^8.38.0",
-    "prettier": "^2.8.7",
-    "rimraf": "^4.4.1",
-    "tsup": "^6.7.0",
-    "typescript": "^5.0.4"
+    "@luludev/eslint-config": "^0.4.2",
+    "@types/node": "^20.4.2",
+    "eslint": "^8.45.0",
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.1",
+    "tsup": "^7.1.0",
+    "typescript": "^5.1.6"
   },
   "dependencies": {
     "dotenv-cra": "^3.0.3"
