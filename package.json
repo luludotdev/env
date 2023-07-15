@@ -1,5 +1,5 @@
 {
-  "name": "@lolpants/env",
+  "name": "@luludev/env",
   "version": "0.6.4",
   "type": "module",
   "main": "./dist/index.js",
@@ -36,13 +36,13 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lolPants/env.git"
+    "url": "https://github.com/luludotdev/env.git"
   },
   "engines": {
     "node": ">=16.9.0"
   },
   "devDependencies": {
-    "@lolpants/eslint-config": "^0.4.0",
+    "@luludev/eslint-config": "^0.4.0",
     "@types/node": "^18.15.11",
     "eslint": "^8.38.0",
     "prettier": "^2.8.7",
