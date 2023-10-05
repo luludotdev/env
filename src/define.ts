@@ -15,7 +15,7 @@ type Values<T extends Template> = {
 }
 
 const validateFn = 'validate'
-interface Extension {
+export interface Extension {
   [validateFn](): void
 }
 
